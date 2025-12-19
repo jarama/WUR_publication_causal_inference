@@ -1,0 +1,6 @@
+/.venv
+/data
+/figures
+/histograms.py
+/used_settings.txt
+/__pycache__
