@@ -106,9 +106,10 @@ if __name__ == "__main__":
     # the grid that you used somewhere so you can always refer back to them.
     # GRID AND OTHER SETTINGS ARE NOT AUTOMATICALLY SAVED!
 
-    cfun.save_sim(sim_df, summary_df,
-                sim_name="test_sim_2",              # Set name of simulation results
-                summary_name="test_sum_2"           # Set name of summary
+    cfun.save_sim(sim_df, 
+                  summary_df,
+                  sim_name="test_sim_2",            # Set name of simulation results
+                  summary_name="test_sum_2"         # Set name of summary
                 )
     
     #endregion
