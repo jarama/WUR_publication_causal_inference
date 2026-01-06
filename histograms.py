@@ -16,8 +16,8 @@ print("─" * 75)
 # Set the paths to the correct directories and files that contain the  
 # simulation and summary data. These should be saved in data/processed.
 
-simulated = "data/processed/SIMULATION_NAME.csv.gz"         # Set simulation data path
-summary = "data/processed/SUMMARY_NAME.csv.gz"              # Set summary data path
+simulated = "data/processed/test1_sim.csv.gz"         # Set simulation data path
+summary = "data/processed/test1_sum.csv.gz"              # Set summary data path
 
 #endregion
 
@@ -37,8 +37,8 @@ df_simulated = pd.read_csv(simulated, compression="gzip")
 # It can be opend in your browser.
   
 cfun.protected_save(df_summary, 
-                    filename="SIMULATION_NAME",             # Set filename 
-                    out_dir="figures/SIMULATION_NAME",      # Set output directory 
+                    filename="test1.html",             # Set filename 
+                    out_dir="summary",      # Set output directory 
                     is_table=True)
 
 #endregion
@@ -74,7 +74,7 @@ param_sets = {                                              # Set parameters to 
 
 cfun.plot_param_sets(df_simulated, param_sets, 
                      confidence=True,                       # Confidence intervals on (True; default) or off (False)
-                     out_dir="figures/SIMULATION_NAME"      # Set output directory
+                     out_dir="figures/test1"      # Set output directory
                      )     
 
 #endregion

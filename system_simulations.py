@@ -87,7 +87,7 @@ if __name__ == "__main__":
         rng=rng,
         excluded_param_sets=excluded_param_sets,
         excluded_var_sets=excluded_var_sets,
-        n_jobs=6                                    # Set cores
+        n_jobs=12                                    # Set cores
     )
 
     #region <SUMMARIZE>
@@ -108,8 +108,8 @@ if __name__ == "__main__":
 
     cfun.save_sim(sim_df, 
                   summary_df,
-                  sim_name="SIMULATION_NAME",       # Set name of simulation results
-                  summary_name="SUMMARY_NAME"       # Set name of summary
+                  sim_name="test1_sim",       # Set name of simulation results
+                  summary_name="test1_sum"       # Set name of summary
                 )
     
     #endregion
