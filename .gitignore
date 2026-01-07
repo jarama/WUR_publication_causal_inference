@@ -1,6 +1,6 @@
 /.venv
+/.vscode
+/__pycache__
 /data
 /figures
-/histograms.py
-/used_settings.txt
-/__pycache__
+/summary
