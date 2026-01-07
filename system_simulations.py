@@ -28,17 +28,14 @@ if __name__ == "__main__":
     
     #endregion
 
-    #region <SIMULATION NAME>
-
-    name = "test1"                                   # Set name of the simulation run
-    
-    #endregion
-
     #region <SIMULATION GRID>
 
     # Here, the simulation and estimation grid can be set. Just follow the 
     # current format. Comment and uncomment wherever necessary and set your
     # own desired grid. MAKE SURE TO NOT CHANGE THE FORMAT!!! 
+
+    # Name of the simulation (used for saving files)
+    name = "test1"                                   # Set name of the simulation run
 
     # Grids
     grid_params = {                                 # Set beta coefficients
