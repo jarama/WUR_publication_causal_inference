@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # own desired grid. MAKE SURE TO NOT CHANGE THE FORMAT!!! 
 
     # Name of the simulation (used for saving files)
-    name = "test1"                                   # Set name of the simulation run
+    name = "test2"                                   # Set name of the simulation run
 
     # Grids
     grid_params = {                                 # Set beta coefficients
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     n_list = [10, 100, 1000]                        # Set sample size(s) 
     
-    n_iter = 1000                                   # Set the amount of iterations
+    n_iter = 10000                                   # Set the amount of iterations
 
     excluded_param_sets = [                         # Set coefficients to exclude
         # {"beta_2": 0, "beta_3": 0},
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         rng=rng,
         excluded_param_sets=excluded_param_sets,
         excluded_var_sets=excluded_var_sets,
-        n_jobs=12                                    # Set cores
+        n_jobs=22                                    # Set cores
     )
     
     #endregion
