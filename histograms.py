@@ -11,13 +11,19 @@ print("─" * 75)
 
 #endregion
 
+#region <SIMULATION NAME>
+
+name = "test1"                                   # Set name of the simulation run
+
+#endregion
+
 #region <PATHS>
 
 # Set the paths to the correct directories and files that contain the  
 # simulation and summary data. These should be saved in data/processed.
 
-simulated = "data/processed/test1_sim.csv.gz"         # Set simulation data path
-summary = "data/processed/test1_sum.csv.gz"              # Set summary data path
+simulated = "data/processed/"+name+"_sim.csv.gz"         # Set simulation data path
+summary = "data/processed/"+name+"_sum.csv.gz"              # Set summary data path
 
 #endregion
 
@@ -37,7 +43,7 @@ df_simulated = pd.read_csv(simulated, compression="gzip")
 # It can be opend in your browser.
   
 cfun.protected_save(df_summary, 
-                    filename="test1.html",             # Set filename 
+                    filename=name+".html",             # Set filename 
                     out_dir="summary",      # Set output directory 
                     is_table=True)
 
@@ -45,7 +51,7 @@ cfun.protected_save(df_summary,
 
 #region <PLOT HISTOGRAMS>
 
-# Set the parameter sets that you want to visualize as histigrams. Don't worry
+# Set the parameter sets that you want to visualize as histograms. Don't worry
 # if some combinations do not exist in your data. These are automatically skipped.
 # It is not necessary to set the sample size (n) or the standard deviation of Y (sd_Y).
 # These are automatically split in the plot function.  
@@ -65,16 +71,20 @@ param_sets = {                                              # Set parameters to 
                  "('T', 'M_1', 'M_2', 'Z_1', 'Z_2', 'C')"]  
 }
 
+#endregion
+
+#region <PLOT HISTOGRAMS>
+
 # The function plot_param_sets() makes histogram plots of the input data and 
 # parameters. The plots are saved to the set output directory. If desired,
 # confidence intervals (based on the simulation outcomes; thus empirical) can be 
 # turned on (default) or off. These plots are quite rough, and are not the final 
 # fine-tuned figures. However, they do provide the necessary insights into the 
-# data and are sufficient for discussions.     
+# data and are sufficient for discussions.    
 
 cfun.plot_param_sets(df_simulated, param_sets, 
                      confidence=True,                       # Confidence intervals on (True; default) or off (False)
-                     out_dir="figures/test1"      # Set output directory
+                     out_dir="figures/"+name      # Set output directory
                      )     
 
 #endregion

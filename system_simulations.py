@@ -27,6 +27,12 @@ if __name__ == "__main__":
     
     #endregion
 
+    #region <SIMULATION NAME>
+
+    name = "test1"                                   # Set name of the simulation run
+    
+    #endregion
+
     #region <SIMULATION GRID>
 
     # Here, the simulation and estimation grid can be set. Just follow the 
@@ -54,6 +60,7 @@ if __name__ == "__main__":
     ]
 
     n_list = [10, 100, 1000]                        # Set sample size(s) 
+    
     n_iter = 1000                                   # Set the amount of iterations
 
     excluded_param_sets = [                         # Set coefficients to exclude
@@ -89,6 +96,8 @@ if __name__ == "__main__":
         excluded_var_sets=excluded_var_sets,
         n_jobs=12                                    # Set cores
     )
+    
+    #endregion
 
     #region <SUMMARIZE>
 
@@ -108,8 +117,8 @@ if __name__ == "__main__":
 
     cfun.save_sim(sim_df, 
                   summary_df,
-                  sim_name="test1_sim",       # Set name of simulation results
-                  summary_name="test1_sum"       # Set name of summary
+                  sim_name=name+"_sim",       # Set name of simulation results
+                  summary_name=name+"_sum"       # Set name of summary
                 )
     
     #endregion
