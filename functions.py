@@ -552,8 +552,8 @@ def filter_df(df, **kwargs):
 
     return subset
 
-def plot_param_sets(df, param_sets, 
-                    confidence=True, 
+def plot_param_sets(df, 
+                    confidence=False, 
                     out_dir="figures"):
     """
     param_sets : dict of lists
@@ -573,29 +573,18 @@ def plot_param_sets(df, param_sets,
     # Check if directory exists, if not: make directory
     os.makedirs(out_dir, exist_ok=True)
 
-    # Expand parameter grid
-    keys = list(param_sets.keys())
-    values = list(param_sets.values())
-
-    expanded_param_sets = [
-        dict(zip(keys, combo))
-        for combo in product(*values)
-    ]
-
     # Get the fixed parameters sample size (n) and standard deviation of Y (sd_Y)
     background_sets = (
-        df[["n", "sd_Y"]]
+        df[["n","beta_0","beta_1","beta_2","beta_3","beta_4","beta_5","beta_6","beta_7","beta_8","sd_Y","incl_vars"]]
         .drop_duplicates()
         .to_dict(orient="records")
     )
 
     # Nested for loop to plot all input parameter combinations over all n and sd_Y
-    for params in expanded_param_sets:
-        for bg in background_sets:
+    for bg in background_sets:
 
             # Get subset of data based on parameter combination
-            full_params = {**params, **bg}
-            subset = filter_df(df, **full_params)
+            subset = filter_df(df, **bg)
 
             # Skip iteration if combination does not exist
             if subset.empty:
@@ -649,7 +638,7 @@ def plot_param_sets(df, param_sets,
             title_params = {
                 ("ß_" + k[len("beta_"):] if k.startswith("beta_") else k):
                     (f"{v:.2f}" if isinstance(v, float) else v)
-                for k, v in full_params.items()
+                for k, v in bg.items()
             }
 
             # Make empty lists to save partial names
@@ -681,7 +670,7 @@ def plot_param_sets(df, param_sets,
                 f"{('ß_' + k[len('beta_'):] if k.startswith('beta_') else k)}-{v:.2f}"
                 if isinstance(v, float)
                 else f"{('ß_' + k[len('beta_'):] if k.startswith('beta_') else k)}-{v}"
-                for k, v in full_params.items()
+                for k, v in bg.items()
             )
 
             # Save as PNG and SVG
@@ -695,6 +684,151 @@ def plot_param_sets(df, param_sets,
             print(f"✔ Saved: {clean_name}")
 
     print("─" * 75)
+
+
+# def plot_param_sets(df, param_sets, 
+#                     confidence=True, 
+#                     out_dir="figures"):
+#     """
+#     param_sets : dict of lists
+#         Example:
+#         {
+#             "beta_0": [0, 1/3, 1, 3],
+#             "beta_1": [0],
+#             ...
+#             "incl_var": ["('T','M','C')"]
+#         }
+
+#     Always conditions on n and sd_Y to avoid mixing distributions.
+#     """
+#     # Title in terminal
+#     print("--- Plot histograms ---")
+
+#     # Check if directory exists, if not: make directory
+#     os.makedirs(out_dir, exist_ok=True)
+
+#     # Expand parameter grid
+#     keys = list(param_sets.keys())
+#     values = list(param_sets.values())
+
+#     expanded_param_sets = [
+#         dict(zip(keys, combo))
+#         for combo in product(*values)
+#     ]
+
+#     # Get the fixed parameters sample size (n) and standard deviation of Y (sd_Y)
+#     background_sets = (
+#         df[["n", "sd_Y"]]
+#         .drop_duplicates()
+#         .to_dict(orient="records")
+#     )
+
+#     # Nested for loop to plot all input parameter combinations over all n and sd_Y
+#     for params in expanded_param_sets:
+#         for bg in background_sets:
+
+#             # Get subset of data based on parameter combination
+#             full_params = {**params, **bg}
+#             subset = filter_df(df, **full_params)
+
+#             # Skip iteration if combination does not exist
+#             if subset.empty:
+#                 continue
+
+#             # Warn and stop if T coefficient is not in subset 
+#             if "coef_T" not in subset.columns:
+#                 print("❌ column 'coef_T' not in DataFrame.")
+#                 return
+
+#             # Start figure
+#             plt.figure(figsize=(10, 4))
+#             subset["coef_T"].hist(
+#                 bins=50,
+#                 density=True,
+#                 alpha=0.4,
+#                 color="cornflowerblue",
+#                 edgecolor="black"
+#             )
+
+#             # Calculate confidence intervals if confidence=True 
+#             if confidence:
+#                 ci_lower, ci_upper = np.percentile(
+#                     subset["coef_T"], [2.5, 97.5]
+#                 )
+
+#                 # And add to figure 
+#                 plt.axvline(ci_lower, color="gray", linestyle="--", lw=1,
+#                             label="95% CI")
+#                 plt.axvline(ci_upper, color="gray", linestyle="--", lw=1)
+
+#             # Add direct effect line to figure
+#             plt.axvline(
+#                 subset["direct_effect"].iloc[0],
+#                 color="blue",
+#                 linestyle=":",
+#                 lw=1.5,
+#                 label=f"Direct ({subset['direct_effect'].iloc[0]:.2f})"
+#             )
+
+#             # Add total effect line to figure
+#             plt.axvline(
+#                 subset["total_effect"].iloc[0],
+#                 color="red",
+#                 linestyle=":",
+#                 lw=1.5,
+#                 label=f"Total ({subset['total_effect'].iloc[0]:.2f})"
+#             )
+
+#             # Set title for figure based on specific parameters
+#             title_params = {
+#                 ("ß_" + k[len("beta_"):] if k.startswith("beta_") else k):
+#                     (f"{v:.2f}" if isinstance(v, float) else v)
+#                 for k, v in full_params.items()
+#             }
+
+#             # Make empty lists to save partial names
+#             beta_items = []
+#             other_items = []
+
+#             # Change beta_ to ß_ olny for the beta parameters
+#             for k, v in title_params.items():
+#                 if k.startswith("ß_"):
+#                     beta_items.append(f"{k}: {v}")
+#                 else:
+#                     other_items.append(f"{k}: {v}")
+
+#             # Stick names together, but still split in two
+#             line1 = ", ".join(beta_items)
+#             line2 = ", ".join(other_items)
+
+#             # Place title on two lines
+#             plt.title(f"{line1}\n{line2}", pad=5)
+
+#             # Add other layout options
+#             plt.xlabel("Estimated effect")
+#             plt.ylabel("Density")
+#             plt.legend()
+#             plt.grid(True, linestyle="--", alpha=0.6)
+
+#             # Get filename based on specific parameter values and use ß_ instead of beta_
+#             clean_name = "_".join(
+#                 f"{('ß_' + k[len('beta_'):] if k.startswith('beta_') else k)}-{v:.2f}"
+#                 if isinstance(v, float)
+#                 else f"{('ß_' + k[len('beta_'):] if k.startswith('beta_') else k)}-{v}"
+#                 for k, v in full_params.items()
+#             )
+
+#             # Save as PNG and SVG
+#             plt.savefig(os.path.join(out_dir, f"{clean_name}.png"), dpi=300)
+#             plt.savefig(os.path.join(out_dir, f"{clean_name}.svg"))
+            
+#             # Close
+#             plt.close()
+
+#             # Message
+#             print(f"✔ Saved: {clean_name}")
+
+#     print("─" * 75)
 
 
 

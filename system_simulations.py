@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import functions as cfun
 
 # This script is used to simulate and estimate over a grid of settings.
@@ -121,4 +122,53 @@ if __name__ == "__main__":
                   summary_name=name+"_sum"       # Set name of summary
                 )
     
+    #endregion
+
+    #region <PATHS>
+
+    # Set the paths to the correct directories and files that contain the  
+    # simulation and summary data. These should be saved in data/processed.
+
+    simulated = "data/processed/"+name+"_sim.csv.gz"         # Set simulation data path
+    summary = "data/processed/"+name+"_sum.csv.gz"              # Set summary data path
+
+    #endregion
+
+    #region <LOAD DATA>
+
+    # Read the data as Pandas dataframe
+
+    df_summary = pd.read_csv(summary, compression="gzip")
+    df_simulated = pd.read_csv(simulated, compression="gzip")
+
+    #endregion
+
+    #region <SAVE TABLE>  
+
+    # The function protected_save(is_table=True) saves the summary data as a HTML    
+    # file. This results in a table that is a easier to read than a terminal print.
+    # It can be opend in your browser.
+    
+    cfun.protected_save(df_summary, 
+                        filename=name+".html",             # Set filename 
+                        out_dir="summary",      # Set output directory 
+                        is_table=True)
+
+    #endregion
+
+    #region <PLOT HISTOGRAMS>
+
+    # The function plot_param_sets() makes histogram plots of the input data and 
+    # parameters. The plots are saved to the set output directory. If desired,
+    # confidence intervals (based on the simulation outcomes; thus empirical) can be 
+    # turned on (default) or off. These plots are quite rough, and are not the final 
+    # fine-tuned figures. However, they do provide the necessary insights into the 
+    # data and are sufficient for discussions.    
+
+
+    cfun.plot_param_sets(df_simulated,
+                        confidence=False,                       # Confidence intervals on (True) or off (False; default)
+                        out_dir="figures/"+name      # Set output directory
+                        )     
+
     #endregion
