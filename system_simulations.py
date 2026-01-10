@@ -35,26 +35,31 @@ if __name__ == "__main__":
     # own desired grid. MAKE SURE TO NOT CHANGE THE FORMAT!!! 
 
     # Name of the simulation (used for saving files)
-    name = "test2"                                   # Set name of the simulation run
+    name = "4"                                   # Set name of the simulation run
 
     # Grids
     grid_params = {                                 # Set beta coefficients
-        "beta_0": [0, 1/3, 1, 3],   
-        "beta_1": [0],
-        "beta_2": [0],
+        "beta_0": [1],   
+        "beta_1": [0, 1/3, 3],
+        "beta_2": [0, 1/3, 3],
         "beta_3": [0],
         "beta_4": [0],
-        "beta_5": [0],
-        "beta_6": [0],
-        "beta_7": [0],
+        "beta_5": [0, 1/3, 3],
+        "beta_6": [0, 1/3, 3],
+        "beta_7": [0, 1],
         "beta_8": [0],
-        "sd_Y": [1/3, 1, 3]
+        "sd_Y": [1/3, 3]
     }
 
     variable_sets = [                               # Set variable sets to control (AKA regressors)
         ["T"],
-        # ["T", "M_1", "M_2"], 
-        # ["T", "M_1", "M_2", "Z_1", "Z_2", "C"]  
+        ["T", "C"],
+        ["T", "M_1"],
+        ["T", "Z_1"],
+        ["T", "C", "M_1"],
+        ["T", "C", "Z_1"],
+        ["T", "M_1", "Z_1"],
+        ["T", "C", "M_1", "Z_1"]
     ]
 
     n_list = [10, 100, 1000]                        # Set sample size(s) 
